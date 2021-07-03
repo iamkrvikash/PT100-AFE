@@ -3,9 +3,7 @@ Analog Front-End for the PT100 temperature sensor inside the HIMA temperature ch
 
 |<img title="Block Diagram" src="/Block_Diagram/Temp_Sensor_Block.png">|
 |:--:|
-|*Figure 1: Block Diagram of PT-100*|
-
-# PT-100 Temperature vs. Resistance Data
+|*Figure 1: Block Diagram of PT-100 AFE*|
 
 [Click Here](/Python/pt100-datasheet.csv) to get the PT-100 Temperature vs. Resistance Data.
 
@@ -20,9 +18,9 @@ The Design requirements are as follows:
 
 ## 2. Theory of operation
 
- - Figure 2 shows the schematic of the RTD amplifier for minimum and maximum output conditions. Note that this circuit was designed for a -40℃ to 151℃ RTD temperature range.
+ - Figure 2 shows the schematic of the Resistance Temperature Detector (RTD) amplifier for minimum and maximum output conditions. Note that this circuit was designed for a -40℃ to 151℃ RTD temperature range.
  - At -40℃ the RTD resistance is 84.27Ω and the voltage across it is 8.427mV (VRTD = (100μA)(84.27Ω)). 
- - Notice that Rtrim develops a voltage drop that opposes the RTD drop. The drop across Rtrim is used to shift amplifiers input differential voltage to a minimum level. 
+ - Here Rtrim develops a voltage drop that opposes the RTD drop. The drop across Rtrim is used to shift amplifiers input differential voltage to a minimum level. 
  - The output is the differential input multiplied by the gain (Vout = 659.67 x 227μV = 0.1497V). 
  - At 151℃ the RTD resistance is 157.69Ω and the voltage across it is 15.769mV (VRTD = (100μA)(157.69Ω)). 
  - This produces a differential input of 7.569mV and an output voltage of 4.9930V (Vout = 659.67 x 7.569mV = 4.9930V).
@@ -34,10 +32,9 @@ The Design requirements are as follows:
 ### 2.1. **Lead Resistance cancelation (3 wire RTD)**
 	
  - Figure 3 below shows the three wire RTD configuration can be used to cancel lead resistance.Note that the resistance in each lead must be equal to cancel the error. Also, the two current sources in the REF200 need to be equal. 
- - 
- - Notice that the voltage developed on the two top leads of the RTD are equal and opposite polarity so that the amplifiers input is only from the RTD voltage. 
- - At 151C, the RTD drop is 15.679mV and the leads each have 0.02mV. Notice that the 0.02mV drops cancel. 
- - Finally, notice that the voltage on the 3rd lead (0.04mV) creates a small shift in the common mode voltage. However, the INA826 has a rail to rail common mode range, so it can accept common mode voltages near ground.
+ - Here the voltage developed on the two top leads of the RTD are equal and opposite polarity so that the amplifiers input is only from the RTD voltage. 
+ - At 151C, the RTD drop is 15.679mV and the leads each have 0.02mV. Therefore, 0.02mV drops cancel. 
+ - Finally, the voltage on the 3rd lead (0.04mV) creates a small shift in the common mode voltage. However, the INA826 has a rail to rail common mode range, so it can accept common mode voltages near ground.
 
 |<img title="Schematic" src="Block_Diagram/schematic.png">|
 |:--:|
@@ -45,12 +42,9 @@ The Design requirements are as follows:
 
 
 ### 2.2 Noise Calculation
-#### Resistror Noise
-For Analysis purpose, Rwire = 20Ω,
-		     Temperature = 45℃(318k), 
-		     B.W. = 30KHz
+#### Resistor Noise
 
-
+For Analysis purpose, Rwire = 20Ω, Temperature = 45℃(318k), B.W. = 30KHz
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\bar{V}_{nr1}^2&space;=&space;4.K.T.(R_{wire}&plus;R_{trim})&space;=&space;1.78&space;\times&space;10^{-18}&space;\frac{V^{2}}{\sqrt{Hz}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\bar{V}_{nr1}^2&space;=&space;4.K.T.(R_{wire}&plus;R_{trim})&space;=&space;1.78&space;\times&space;10^{-18}&space;\frac{V^{2}}{\sqrt{Hz}}" title="\bar{V}_{nr1}^2 = 4.K.T.(R_{wire}+R_{trim}) = 1.78 \times 10^{-18} \frac{V^{2}}{\sqrt{Hz}}" /></a>
 
@@ -61,7 +55,8 @@ For Analysis purpose, Rwire = 20Ω,
 
 |<img title="R_noise" src="/Block_Diagram/r_noise.png">|
 |:--:|
-|*Figure 4: Resistance Noise *|
+|*Figure 4: Resistance Noise* |
+
 Resistance Noise  | Value (nV/Hz^0.5) |
  ------------ | :-----------: | 
 Vnr1      |          1.34 |
@@ -70,7 +65,6 @@ Vnr3       |   0.6  |
 
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\small&space;Total&space;Resistance&space;Noise&space;=&space;V_{nr}&space;=&space;\sqrt{(1.34)^{2}&space;&plus;&space;(2.1)^2}&space;&plus;&space;0.6&space;=&space;3.1\frac{nV}{\sqrt{Hz}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\small&space;Total&space;Resistance&space;Noise&space;=&space;V_{nr}&space;=&space;\sqrt{(1.34)^{2}&space;&plus;&space;(2.1)^2}&space;&plus;&space;0.6&space;=&space;3.1\frac{nV}{\sqrt{Hz}}" title="\small Total Resistance Noise = V_{nr} = \sqrt{(1.34)^{2} + (2.1)^2} + 0.6 = 3.1\frac{nV}{\sqrt{Hz}}" /></a>
-
 
 
 #### Current Noise
@@ -125,18 +119,17 @@ R3 = 82Ω (standard value)
 <a href="https://www.codecogs.com/eqnedit.php?latex=f_{c}=\frac{1}{2\cdot&space;\prod&space;\cdot&space;R_{f}\cdot&space;C_{f}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?f_{c}=\frac{1}{2\cdot&space;\prod&space;\cdot&space;R_{f}\cdot&space;C_{f}}" title="f_{c}=\frac{1}{2\cdot \prod \cdot R_{f}\cdot C_{f}}" /></a>
 
 From this equation
-Rf = 75Ω &
-Cf = 0.22uF
+Rf = 75Ω & Cf = 0.22uF
 
 
 ## 3. PCB Design
-This PCB layout was designed using [Autodesk Eagle](https://www.autodesk.in/products/eagle/overview). For the components we have used [SparkFun Eagle Libraries](https://github.com/sparkfun/SparkFun-Eagle-Libraries). The footprints of the ICs(INA 826, Ref200) can be downloaded from the [Ultra Librarian](https://www.ultralibrarian.com/).
+This PCB layout was designed using [Autodesk Eagle](https://www.autodesk.in/products/eagle/overview). For the components we have used [SparkFun Eagle Libraries](https://github.com/sparkfun/SparkFun-Eagle-Libraries). The footprints of the ICs(INA 826, REF200) can be downloaded from the [Ultra Librarian](https://www.ultralibrarian.com/).
 
 ### 3.1. Electrical Schematic
 
 |<img title="PCB Bottom" src="/PCB/elect_sch.png">|
 |:--:|
-|*Figure 4:Electrical Schematic*|
+|*Figure 6:Electrical Schematic*|
 
 ### 3.1. PCB Layout
 
@@ -151,12 +144,12 @@ This PCB layout was designed using [Autodesk Eagle](https://www.autodesk.in/prod
 
 |<img title="PCB Top" src="/PCB/PCB_Top.png">|
 |:--:|
-|*Figure 5: PCB Top - Red*|
+|*Figure 7: PCB Top - Red*|
 
 
 |<img title="PCB Bottom" src="/PCB/PCB_Bottom.png">|
 |:--:|
-|*Figure 6: PCB Bottom - Blue*|
+|*Figure 8: PCB Bottom - Blue*|
 
 ### 3.2. Component Selection
 
@@ -184,24 +177,24 @@ This PCB layout was designed using [Autodesk Eagle](https://www.autodesk.in/prod
 
 |<img title="Resistance Vs Temperature" src="/Python/Res_vs_Temp.png">|
 |:--:|
-|*Fig 7:Resistance Vs Temperature*|
+|*Fig 9: Resistance Vs Temperature*|
 
 ### AFE o/p Voltage Vs Temperature Plot
 
 |<img title="AFE o/p Voltage Vs Temperature Plot" src="/Python/AFE_vs_Temp.png">|
 |:--:|
-|*Fig 8:AFE o/p Voltage Vs Temperature*|
+|*Fig 10: AFE o/p Voltage Vs Temperature*|
 
 ### Code Vs Temperature Plot
 
 |<img title="Code Vs Temperature Plot" src="/Python/Code_vs_Temp.png">|
 |:--:|
-|*Fig 9:Code Vs Temperature*|
+|*Fig 11: Code Vs Temperature*|
 
 ### Error Vs Temperature Plot
 
 |<img title="Error Vs Temperature Plot" src="/Python/Error_vs_Temp.png">|
 |:--:|
-|*Fig 10:Error Vs Temperature*|
+|*Fig 12: Error Vs Temperature*|
 
 [Click Here](/Python/pt100.py) to get the python code.
